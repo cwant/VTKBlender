@@ -5,6 +5,8 @@ incompatability between the Python versions used for recent versions of Blender 
 been solved recently, so I hope to find time to update this script for use with modern versions of
 Blender.**
 
+**The good news is that I should have this script working for Blender 2.78+ and VTK 7.x in April or May, 2017, now that VTK supports Python 3.x (in the case of Blender 2.78, this would be using Python 3.5).**
+
 ## Introduction
 
 The recent increase in popularity of open source software has created some interesting possibilities 
