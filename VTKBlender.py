@@ -107,13 +107,13 @@ class PolyDataMapperToBlender:
         #print(pdata.GetNumberOfCells())
 
         self.point_data_to_verts(pdata)
-        # self.process_colors(scalars, plut)
+        self.read_colors(scalars, plut)
         self.process_topology(pdata, scalars)
 
         self.mesh.from_pydata(self.verts, self.edges, self.faces)
 
         self.set_smooth()
-        # self.adjust_colors()
+        self.apply_vertex_colors()
         #self.set_materials()
         if (not self.newmesh):
             self.mesh.update()
@@ -182,34 +182,38 @@ class PolyDataMapperToBlender:
     def add_vert(self, x, y, z):
         self.verts.append([x, y, z])
 
-    def process_colors(self, scalars, plut):
+    def read_colors(self, scalars, plut):
         if ( (scalars != None) and (plut != None) ):
             self.colors = []
 
-        scolor = [0,0,0]
-        for i in range(scalars.GetNumberOfTuples()):
-            plut.GetColor(scalars.GetTuple1(i), scolor)
-            color = map(self.vtk_to_blender_color, scolor)
-            alpha = int(plut.GetOpacity(scalars.GetTuple1(i))*255)
-            colors.append([color[0], color[1], color[2], alpha])
+            scolor = [0,0,0]
+            for i in range(scalars.GetNumberOfTuples()):
+                plut.GetColor(scalars.GetTuple1(i), scolor)
+
+                color = scolor
+                alpha = plut.GetOpacity(scalars.GetTuple1(i))
+                self.colors.append([scolor[0], scolor[1], scolor[2], alpha])
 
     def set_smooth(self):
         if ( self.flags & self.SMOOTH_FACES):
             for f in me.faces:
                 f.smooth = 1
 
-    def adjust_colors(self):
+    def apply_vertex_colors(self):
         # Some faces in me.faces may have been discarded from our
         # list, so best to compute the vertex colors after the faces
         # have been added to the mesh
-        if (colors != None):
-            me.vertexColors = 1
-            for f in me.faces:
-                f_col = []
-                for v in f.v:
-                    f_col.append(colors[v.index])
-
-                    self.set_v_colors(f.col, f_col)
+        if (self.colors != None):
+            if not self.mesh.vertex_colors:
+                self.mesh.vertex_colors.new()
+            color_layer = self.mesh.vertex_colors.active
+            i = 0
+            for poly in self.mesh.polygons:
+                for idx in poly.vertices:
+                  rgb = self.colors[idx]
+                  # No alpha? Why Blender, why?
+                  color_layer.data[i].color = rgb[0:3]
+                  i += 1
 
     def set_materials(self):
         if not self.mesh.materials:
@@ -386,13 +390,3 @@ class PolyDataMapperToBlender:
     
     def add_edge(self, n1, n2):
         self.edges.append([n1, n2])
-    
-    def set_v_colors(self, col, vcols):
-        for j in range(len(col)):
-            col[j].r = vcols[j][0]
-            col[j].g = vcols[j][1]
-            col[j].b = vcols[j][2]
-            if len(vcols[j]) == 3:
-                col[j].a = 255
-            else:
-                col[j].a = vcols[j][3]
