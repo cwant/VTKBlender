@@ -2,6 +2,9 @@
 
 **This code has been tested with Blender 2.78 and VTK 7.1.1**
 
+**Note that the screenshots below haven't been updated and
+reflect the user interface from pre-2.5 Blender.**
+
 ## Introduction
 
 [VTK](http://www.vtk.org/) is a great visualization library and
