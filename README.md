@@ -5,6 +5,8 @@
 **Note that the screenshots below haven't been updated and
 reflect the user interface from pre-2.5 Blender.**
 
+**Need to use Blender 2.4x? Checkout the ```legacy_blender_2.4x``` branch.**
+
 ## Introduction
 
 [VTK](http://www.vtk.org/) is a great visualization library and
