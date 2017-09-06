@@ -183,8 +183,6 @@ create a 30 frame animation by pressing the Anim button.
 To render the object with some scenery, press the 2 key with your mouse
 pointer in the 3D Window to reveal the hidden layer number 2. Press 'Animation' to render. (Note, your renders might not match those in this document -- these were done with Blender 2.4x, which supported transparency in vertex colours).
 
-![Screenshot](assets/blender-screen-shot2d.jpg)
-
 If you wait long enough, the final result will look something like this
 (click to download an mpeg of the animation, let the animation
 loop in your viewer):
