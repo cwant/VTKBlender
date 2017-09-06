@@ -2,9 +2,6 @@
 
 **This code has been tested with Blender 2.78 and VTK 7.1.1**
 
-**Note that the screenshots below haven't been updated and
-reflect the user interface from pre-2.5 Blender.**
-
 **Need to use Blender 2.4x? Checkout the ```legacy_blender_2.4x``` branch.**
 
 ## Introduction
@@ -153,7 +150,7 @@ http://archive.blender.org/features-gallery/gallery/
 ### Example 2
 
 In this example we will use Blender to animate and render a visualization
-created in VTK. (Please note that some of the screenshots are out of date.)
+created in VTK.
 
 Download the example file here:
 
@@ -165,7 +162,7 @@ The thing that drives the animation is a callback that runs some code
 via a handler: ```bpy.app.handlers.frame_change_pre```.
 The handler tells Blender that we would like the script
 ```frame_change_pre.py``` to be executed every time the frame changes.
-To see this effect, run the script in Blender, then change the frame
+To see this effect, run the script in Blender (with mouse in the script window, press Alt-P), then change the frame
 using the left or right arrow keys or watch the scene being
 animated by pressing Alt-A when the mouse pointer is in the 3D window.
 
@@ -183,14 +180,11 @@ create a 30 frame animation by pressing the Anim button.
 
 ![Screenshot](assets/blender-render2.jpg)
 
-OK, do you remember in the last example when I said we would be doing
-something more fancy? Well, here it is: press the 2 key with your mouse
-pointer in the 3D Window to reveal the hidden layer number 2, enable the
-raytracer with the Ray button, and press Anim.
+To render the object with some scenery, press the 2 key with your mouse
+pointer in the 3D Window to reveal the hidden layer number 2. Press 'Animation' to render. (Note, your renders might not match those in this document -- these were done with Blender 2.4x, which supported transparency in vertex colours).
 
 ![Screenshot](assets/blender-screen-shot2d.jpg)
 
-We are going to be raytracing so I hope you have a lot of spare CPU time!
 If you wait long enough, the final result will look something like this
 (click to download an mpeg of the animation, let the animation
 loop in your viewer):
