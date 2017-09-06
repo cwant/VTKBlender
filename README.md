@@ -132,9 +132,7 @@ in the bottom text window and press Alt-P to run the script.
 
 ![Screenshot](assets/blender-screen-shot1c.jpg)
 
-Where are the colors? Lets switch to shaded mode to see them
-(press Shift-Z with your mouse cursor in the 3D window to
-switch display modes).
+Where are the colors? Lets switch to material display mode to see them (click the little white marble in the footer of the 3d viewport to change the display mode).
 
 ![Screenshot](assets/blender-screen-shot1d.jpg)
 
