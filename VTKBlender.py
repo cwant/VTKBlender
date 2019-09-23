@@ -210,10 +210,9 @@ class PolyDataMapperToBlender:
             i = 0
             for poly in self.mesh.polygons:
                 for idx in poly.vertices:
-                  rgb = self.colors[idx]
-                  # No alpha? Why Blender, why?
-                  color_layer.data[i].color = rgb[0:3]
-                  i += 1
+                    rgb = self.colors[idx]
+                    color_layer.data[i].color = rgb
+                    i += 1
 
     # def __set_materials(self):
     #     if not self.mesh.materials:
