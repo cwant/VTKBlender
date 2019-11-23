@@ -1,6 +1,6 @@
 # VTKBlender: VTK and Blender
 
-**This code has been tested with Blender 2.78 and VTK 7.1.1**
+**This code has been partially tested with Blender 2.80 and VTK 8.2**
 
 **Need to use Blender 2.4x? Checkout the ```legacy_blender_2.4x``` branch.**
 
@@ -37,6 +37,13 @@ export LD_LIBRARY_PATH=$HOME/install/vtk/vtk-7.1.1/lib
 
 The first line helps python find the VTK python packages and the VTKBlender module (this code). The second line helps the VTK python packages find the linked libraries for VTK.
 
+Alternatively, you could add the path to vtk-python (or other libraries) in the VTKBlender.py file by adding following two lines:
+
+```python
+    import sys
+    sys.path.append('/path/to/python3.7/site-packages')
+```
+
 ## What does the VTKBlender python module do?
 
 The VTKBlender module has two main purposes:
@@ -61,9 +68,12 @@ not added to the scene, and can be added afterwards via:
   ```python
     ob = bpy.data.objects.new('Mesh', me)
     scn = bpy.context.scene
-    scn.objects.link(ob)
+    # works for Blender < 2.80
+    # scn.objects.link(ob)
+    bpy.context.collection.objects.link(ob)
   ```
-  
+
+
 The reason why the function takes a vtkPolyDataMapper object as an argument
 (instead of a vtkPolyData object) is because the vtkPolyDataMapper can also
 contain a look up table to color the data, in which case the blender
