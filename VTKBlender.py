@@ -196,7 +196,7 @@ class PolyDataMapperToBlender:
 
     def __set_smooth(self):
         if self.flags & self.SMOOTH_FACES:
-            for f in me.faces:
+            for f in self.mesh.faces:
                 f.smooth = 1
 
     def __apply_vertex_colors(self):
@@ -204,15 +204,19 @@ class PolyDataMapperToBlender:
         # list, so best to compute the vertex colors after the faces
         # have been added to the mesh
         if self.colors is not None:
-            if not self.mesh.vertex_colors:
-                self.mesh.vertex_colors.new()
-            color_layer = self.mesh.vertex_colors.active
-            i = 0
-            for poly in self.mesh.polygons:
-                for idx in poly.vertices:
-                    rgb = self.colors[idx]
-                    color_layer.data[i].color = rgb
-                    i += 1
+            bm = bmesh.new()
+            bm.from_mesh(self.mesh)
+
+            if not bm.loops.layers.color.get("color"):
+                color_layer = bm.loops.layers.color.new("color")
+            else:
+                color_layer = bm.loops.layers.color.get("color")
+            for face in bm.faces:
+                for loop in face.loops:
+                    loop[color_layer] = self.colors[loop.vert.index]
+
+            bm.to_mesh(self.mesh)
+            self.mesh.update()
 
     # def __set_materials(self):
     #     if not self.mesh.materials:
@@ -241,8 +245,8 @@ class PolyDataMapperToBlender:
             return
 
         if ((self.flags & self.TRIS_TO_QUADS) and
-                (i < pdata.GetNumberOfCells() - 1) and
-                (pdata.GetCellType(i + 1) == 5)):
+            (i < pdata.GetNumberOfCells() - 1) and
+            (pdata.GetCellType(i + 1) == 5)):
             n1 = cell.GetPointId(0)
             n2 = cell.GetPointId(1)
             n3 = cell.GetPointId(2)
@@ -316,7 +320,7 @@ class PolyDataMapperToBlender:
             plut.GetColor(scal, scolor)
             color = map(self.__vtk_to_blender_color, scolor)
             alpha = int(plut.GetOpacity(scalars.GetTuple1(i)) * 255)
-            colors.append([color[0], color[1], color[2], alpha])
+            self.colors.append([color[0], color[1], color[2], alpha])
 
         # Add triangles connecting polynomial sides to new vert
         for j in range(N):
@@ -347,7 +351,6 @@ class PolyDataMapperToBlender:
         for i in range(pdata.GetNumberOfCells()):
             cell = pdata.GetCell(i)
 
-            print(i, pdata.GetCellType(i))
 
             # Do line
             if pdata.GetCellType(i) == 3:
